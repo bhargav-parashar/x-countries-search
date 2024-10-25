@@ -1,0 +1,15 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    padding: 10px 0px;
+    background-color: aliceblue;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    margin-bottom: 20px;
+    position: fixed;
+    top:0;
+    width: 100%;
+}
+.navbar{
+    width: 50%;
+    height: 2vw;
+}
