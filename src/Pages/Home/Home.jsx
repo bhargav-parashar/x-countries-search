@@ -6,6 +6,8 @@ import axios from "axios";
 
 const Home = () => {
   const [countries, setCountries] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
 
   useEffect(() => {
     performApiCall();
@@ -15,17 +17,37 @@ const Home = () => {
     try {
       const response = await axios.get("https://restcountries.com/v3.1/all");
       setCountries(response.data);
+      setFilteredCountries(response.data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const filterCountries = (searchText) => {
+    setSearchText(searchText);
+    if (!searchText) {
+      setFilteredCountries(countries);
+      return;
+    }
+    const arr = countries.filter((item) => {
+      if (item.name.common.toLowerCase().includes(searchText.toLowerCase())) {
+        return item;
+      }
+    });
+    setFilteredCountries(arr);
+  };
 
   return (
     <div>
-      <Navbar />
+      <Navbar
+        setSearchText={setSearchText}
+        searchText={searchText}
+        filterCountries={filterCountries}
+      />
       <div className={styles.wrapper}>
-      {countries.map((item)=><CountryCard data={item}/>)}
+        {filteredCountries.map((item) => (
+          <CountryCard data={item} />
+        ))}
       </div>
     </div>
   );
