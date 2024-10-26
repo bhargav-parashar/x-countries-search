@@ -17,7 +17,7 @@ const Home = () => {
 
   const performApiCall = async () => {
     try {
-      const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,flags");
+      const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,flags,flag");
       setCountries(response.data);
       setFilteredCountries(response.data);
     } catch (err) {
@@ -57,7 +57,7 @@ const Home = () => {
     
   };
 
-  
+  console.log(document.getElementsByClassName("countryCard"));
 
 
   return (
@@ -73,7 +73,7 @@ const Home = () => {
       </Navbar>
       <div className={styles.wrapper}>
         {filteredCountries.map((item) => (
-          <CountryCard data={item} />
+          <CountryCard data={item} key={item.flag} />
         ))}
       </div>
     </div>
