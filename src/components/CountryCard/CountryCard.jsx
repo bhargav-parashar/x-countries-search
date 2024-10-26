@@ -1,6 +1,4 @@
 import React from "react";
-import styles from "./CountryCard.module.css";
-
 
 const CountryCard = ({data}) => {
   const styles={
