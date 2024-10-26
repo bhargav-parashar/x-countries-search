@@ -23,7 +23,7 @@ const CountryCard = ({data}) => {
         alt={`Flag of ${data.name.common}`} 
         style={{width:"100px", height:"100px"}}  
         />
-        <h3>{data.name.common}</h3>
+        <p>{data.name.common}</p>
         
     </div>
   );

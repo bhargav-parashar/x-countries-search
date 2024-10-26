@@ -12,10 +12,10 @@ const Home = () => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-    performApiCall();
+    getCountries();
   }, []);
 
-  const performApiCall = async () => {
+  const getCountries = async () => {
     try {
       const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,flags,flag");
       setCountries(response.data);
