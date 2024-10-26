@@ -17,7 +17,7 @@ const Home = () => {
 
   const getCountries = async () => {
     try {
-      const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,flags,flag");
+      const response = await axios.get("https://restcountries.com/v3.1/all");
       setCountries(response.data);
       setFilteredCountries(response.data);
     } catch (err) {
