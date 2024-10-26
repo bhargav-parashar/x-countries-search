@@ -2,20 +2,22 @@ import React, { useRef, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import CountryCard from "../../components/CountryCard/CountryCard";
 import styles from "./Home.module.css";
+import navStyles from "../../components/Navbar/Navbar.module.css";
 import axios from "axios";
 
 const Home = () => {
   const [countries, setCountries] = useState([]);
-  const [searchText, setSearchText] = useState("");
   const [filteredCountries, setFilteredCountries] = useState([]);
-
+  const [debounceTimeout, setDebounceTimeout] = useState(0);
+  const inputRef = useRef();
   useEffect(() => {
+    inputRef.current.focus();
     performApiCall();
   }, []);
 
   const performApiCall = async () => {
     try {
-      const response = await axios.get("https://restcountries.com/v3.1/all");
+      const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,flags");
       setCountries(response.data);
       setFilteredCountries(response.data);
     } catch (err) {
@@ -23,8 +25,14 @@ const Home = () => {
     }
   };
 
-  const filterCountries = (searchText) => {
-    setSearchText(searchText);
+  const filterCountries = async (searchText) => {
+    // const url = `https://restcountries.com/v3.1/name/${searchText}?fields=name,flags`;
+    // try{
+    //   const filteredResp = await axios.get(url);
+    //   setFilteredCountries(filteredResp.data);
+    // }catch(err){
+    //   console.log(err);
+    // }
     if (!searchText) {
       setFilteredCountries(countries);
       return;
@@ -37,13 +45,32 @@ const Home = () => {
     setFilteredCountries(arr);
   };
 
+  const debounceSearch = (e, debounceTimeout)=>{
+    const text = e.target.value;
+    if(debounceTimeout){
+      clearTimeout(debounceTimeout);
+    }
+      const timeout = setTimeout(()=>{
+        filterCountries(text);
+      },500);
+      setDebounceTimeout(timeout);
+    
+  };
+
+  
+
+
   return (
     <div>
-      <Navbar
-        setSearchText={setSearchText}
-        searchText={searchText}
-        filterCountries={filterCountries}
-      />
+      <Navbar>
+        <input
+          ref={inputRef}
+          className={navStyles.navbar}
+          type="text"
+          placeholder=" Search"
+          onChange={(e) => debounceSearch(e, debounceTimeout)}
+        />
+      </Navbar>
       <div className={styles.wrapper}>
         {filteredCountries.map((item) => (
           <CountryCard data={item} />
